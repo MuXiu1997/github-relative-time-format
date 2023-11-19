@@ -2,7 +2,7 @@
 // @name              GitHub Relative Time Format
 // @name:zh-CN        GitHub 时间格式化
 // @namespace         https://greasyfork.org/zh-CN/scripts/480032-github-relative-time-format
-// @version           0.1.0
+// @version           0.2.0
 // @description       replacing GitHub relative timestamps(<relative-time>) with customizable date and time formats
 // @description:zh-CN 用自定义的日期时间格式替换 GitHub 时间显示（<relative-time>）
 // @author            MuXiu1997 (https://github.com/MuXiu1997)
@@ -25,11 +25,19 @@
     const TOOLTIP_FORMAT = useOption('TOOLTIP_FORMAT', 'Change tooltip format', 'YYYY-MM-DD HH:mm:ss')
 
     function replaceRelativeTimeText() {
-        const relativeTimeElements = document.getElementsByTagName("relative-time")
+        const relativeTimeElements = document.getElementsByTagName('relative-time')
         for (const e of relativeTimeElements) {
-            const datetimeStr = e.getAttribute("datetime")
-            const dateObj = dayjs(datetimeStr)
+            const datetime = e.getAttribute('datetime')
+            const format = e.getAttribute('format')
+
+            const dateObj = dayjs(datetime)
+
             e.title = dateObj.format(TOOLTIP_FORMAT.value)
+
+            if (format ==='duration' || format === 'elapsed')
+                continue
+
+            e.disconnectedCallback()
             e.shadowRoot.innerHTML = dateObj.format(DISPLAY_FORMAT.value)
         }
     }
