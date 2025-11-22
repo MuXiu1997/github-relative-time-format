@@ -1,10 +1,9 @@
-import { isNil } from 'lodash-es'
-
 /** Option management Hook */
-export function useOption<T extends string | number | boolean>(
+export function useOption(
   key: string,
   title: string,
-  defaultValue: T,
+  defaultValue: string,
+  onChange?: (value: string) => void,
 ) {
   if (typeof GM_getValue === 'undefined') {
     return {
@@ -17,18 +16,18 @@ export function useOption<T extends string | number | boolean>(
     get value() {
       return value
     },
-    set value(v: T) {
+    set value(v: string) {
       value = v
-      GM_setValue(key, v as string & number & boolean)
-      location.reload() // Keep refreshing here to ensure the state is completely updated
+      GM_setValue(key, v)
+      onChange?.(v)
     },
   }
 
   GM_registerMenuCommand(title, () => {
-    const result = prompt(title, String(value))
-    if (!isNil(result)) {
-      // Simple type conversion handling, assuming mainly string configurations
-      ref.value = result as T
+    // eslint-disable-next-line no-alert
+    const result = prompt(title, value)
+    if (result !== null) {
+      ref.value = result
     }
   })
 

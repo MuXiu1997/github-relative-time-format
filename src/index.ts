@@ -1,104 +1,66 @@
-import dayjs from 'dayjs'
-import { debounce } from 'lodash-es'
+import { debounce } from 'ts-debounce'
+import { isRelativeTimeElement, updateAllElements } from './core'
 import { useOption } from './useOption'
-
-// region Constants & Types
-
-/** Attribute for processed elements */
-const PROCESSED_ATTR = 'data-grtf-processed'
-
-/** Extended HTMLElement interface to include specific methods for relative-time elements */
-interface RelativeTimeElement extends HTMLElement {
-  disconnectedCallback?: () => void
-  datetime?: string
-  format?: string
-}
-
-// endregion Constants & Types
-
-// region Core Functions
-
-/** Process a relative-time element */
-function processRelativeTimeElement(
-  e: RelativeTimeElement,
-  displayFormat: string,
-  tooltipFormat: string,
-) {
-  e.setAttribute(PROCESSED_ATTR, 'true')
-
-  const datetime = e.getAttribute('datetime')
-  const format = e.getAttribute('format')
-
-  if (format === 'duration' || format === 'elapsed') return
-  if (!datetime) return
-
-  const dateObj = dayjs(datetime)
-  if (!dateObj.isValid()) return
-
-  e.title = dateObj.format(tooltipFormat)
-
-  try {
-    // Try to stop the native component's update timer
-    // Use optional chaining to prevent the method from not existing
-    e.disconnectedCallback?.()
-
-    if (e.shadowRoot) {
-      e.shadowRoot.innerHTML = dateObj.format(displayFormat)
-    } else {
-      // Fallback to text content if shadow root is not available
-      e.textContent = dateObj.format(displayFormat)
-    }
-  } catch (error) {
-    console.debug('[GRTF] Error updating element', e, error)
-  }
-}
-
-/** Replace the text of relative-time elements */
-function replaceRelativeTimeText(displayFormat: string, tooltipFormat: string) {
-  const relativeTimeElements = document.querySelectorAll<RelativeTimeElement>(
-    `relative-time:not([${PROCESSED_ATTR}])`,
-  )
-
-  if (relativeTimeElements.length === 0) return
-
-  for (const e of relativeTimeElements) {
-    processRelativeTimeElement(e, displayFormat, tooltipFormat)
-  }
-}
-
-// endregion Core Functions
 
 // region Main
 
+/** Main entry point for the userscript */
 function main() {
+  /** Debounced update function to prevent performance issues during rapid DOM changes */
+  let debouncedUpdate: () => void
+
+  /** Callback triggered when user options change */
+  function onOptionChange() {
+    debouncedUpdate()
+  }
+
   // Options
-  const DISPLAY_FORMAT = useOption(
+  /** Configuration for the displayed date format */
+  const displayFormatOption = useOption(
     'DISPLAY_FORMAT',
     'Change display format',
     'YY-MM-DD HH:mm',
+    onOptionChange,
   )
-  const TOOLTIP_FORMAT = useOption(
+  /** Configuration for the tooltip date format */
+  const tooltipFormatOption = useOption(
     'TOOLTIP_FORMAT',
     'Change tooltip format',
     'YYYY-MM-DD HH:mm:ss',
+    onOptionChange,
   )
 
   // Event Handlers
-  const handleUpdate = debounce(() => {
-    replaceRelativeTimeText(DISPLAY_FORMAT.value, TOOLTIP_FORMAT.value)
-  }, 200)
+  debouncedUpdate = debounce(() => {
+    updateAllElements(displayFormatOption.value, tooltipFormatOption.value)
+  }, 100)
 
-  const setupObserver = () => {
-    const observer = new MutationObserver(handleUpdate)
+  /** Initialize MutationObserver to monitor DOM changes for new relative-time elements */
+  const initObserver = () => {
+    const observer = new MutationObserver((mutations) => {
+      let shouldUpdate = false
+      for (const mutation of mutations) {
+        const target = mutation.target
+        if (isRelativeTimeElement(target)) {
+          shouldUpdate = true
+          break
+        }
+      }
+      if (shouldUpdate)
+        debouncedUpdate()
+    })
+
     observer.observe(document.body, {
       childList: true,
       subtree: true,
+      attributes: true,
+      attributeFilter: ['datetime', 'format'],
     })
   }
 
   // Initialization
-  replaceRelativeTimeText(DISPLAY_FORMAT.value, TOOLTIP_FORMAT.value)
-  setupObserver()
+  updateAllElements(displayFormatOption.value, tooltipFormatOption.value)
+  initObserver()
 }
 
 // endregion Main
