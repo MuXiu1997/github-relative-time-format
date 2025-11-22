@@ -6,7 +6,8 @@
   "author": "MuXiu1997 <muxiu1997@gmail.com> (https://github.com/MuXiu1997/)",
   "main": "dist/index.iife.js",
   "scripts": {
-    "build": "tsdown"
+    "build": "tsdown",
+    "lint": "eslint --fix src/**/*.ts"
   },
   "keywords": [],
   "license": "MIT",
@@ -22,6 +23,8 @@
     "lodash-es": "4.17.21",
     "pnpm": "10.23.0",
     "tsdown": "0.16.6",
-    "typescript": "5.9.3"
+    "typescript": "5.9.3",
+    "@antfu/eslint-config": "6.2.0",
+    "eslint": "9.38.0"
   }
 }
