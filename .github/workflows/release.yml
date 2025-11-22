@@ -1,0 +1,65 @@
+name: Release
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  release:
+    name: Release
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Release
+        id: release
+        uses: googleapis/release-please-action@v4
+        with:
+          release-type: node
+
+      - name: Checkout
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.release.outputs.tag_name }}
+
+      - name: Read versions from package.json
+        if: ${{ steps.release.outputs.release_created }}
+        run: |
+          echo "NODE_VERSION=$(node -p 'require("./package.json").engines.node')" >> $GITHUB_ENV
+          echo "PNPM_VERSION=$(node -p 'require("./package.json").packageManager.split("@")[1]')" >> $GITHUB_ENV
+
+      - name: Setup Pnpm
+        if: ${{ steps.release.outputs.release_created }}
+        uses: pnpm/action-setup@v4
+        with:
+          version: ${{ env.PNPM_VERSION }}
+
+      - name: Setup Node
+        if: ${{ steps.release.outputs.release_created }}
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ env.NODE_VERSION }}
+          cache: pnpm
+          cache-dependency-path: '**/pnpm-lock.yaml'
+
+      - name: Install Node Dependencies
+        if: ${{ steps.release.outputs.release_created }}
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        if: ${{ steps.release.outputs.release_created }}
+        run: pnpm run build
+
+      - name: Upload Release Artifacts
+        if: ${{ steps.release.outputs.release_created }}
+        uses: ncipollo/release-action@v1
+        with:
+          allowUpdates: true
+          tag: ${{ steps.release.outputs.tag_name }}
+          artifacts: "dist/*"
+          token: ${{ secrets.GITHUB_TOKEN }}
+          omitBodyDuringUpdate: true
+          omitNameDuringUpdate: true
