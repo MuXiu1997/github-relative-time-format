@@ -8,7 +8,7 @@
     "strict": true,
     "skipLibCheck": true,
     "lib": ["DOM", "DOM.Iterable", "ESNext"],
-    "types": ["greasemonkey"],
+    "types": ["greasemonkey","node"],
     "resolveJsonModule": true
   },
   "include": ["src/**/*", "tsdown.config.ts"]
