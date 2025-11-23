@@ -14,7 +14,7 @@
   "scripts": {
     "build": "tsdown",
     "dev": "tsdown --watch",
-    "lint": "eslint --fix src/**/*.ts"
+    "lint": "eslint --fix . && tsc --noEmit"
   },
   "devDependencies": {
     "@antfu/eslint-config": "6.2.0",
