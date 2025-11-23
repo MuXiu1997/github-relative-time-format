@@ -1,3 +1,4 @@
+import { effect } from 'alien-signals'
 import { debounce } from 'ts-debounce'
 import { isRelativeTimeElement, updateAllElements } from './core'
 import { useOption } from './useOption'
@@ -6,48 +7,49 @@ import { useOption } from './useOption'
 
 /** Main entry point for the userscript */
 function main() {
-  /** Debounced update function to prevent performance issues during rapid DOM changes */
-  let debouncedUpdate: () => void
-
-  /** Callback triggered when user options change */
-  function onOptionChange() {
-    debouncedUpdate()
-  }
-
   // Options
-  /** Configuration for the displayed date format */
   const displayFormatOption = useOption(
     'DISPLAY_FORMAT',
     'Change display format',
     'YY-MM-DD HH:mm',
-    onOptionChange,
   )
-  /** Configuration for the tooltip date format */
   const tooltipFormatOption = useOption(
     'TOOLTIP_FORMAT',
     'Change tooltip format',
     'YYYY-MM-DD HH:mm:ss',
-    onOptionChange,
   )
 
-  // Event Handlers
-  debouncedUpdate = debounce(() => {
-    updateAllElements(displayFormatOption.value, tooltipFormatOption.value)
-  }, 100)
+  // Core Update Logic
+  // This function reads the latest signal values and updates DOM
+  const runUpdate = () => {
+    updateAllElements(displayFormatOption(), tooltipFormatOption())
+  }
+
+  // Reactive: Auto-update when options change
+  // effect will auto-track signals used in runUpdate (displayFormatOption, tooltipFormatOption)
+  effect(() => {
+    runUpdate()
+  })
+
+  // Debounced: For DOM changes updates (MutationObserver)
+  // Debounce is necessary as DOM changes can be frequent
+  const debouncedUpdate = debounce(runUpdate, 100)
 
   /** Initialize MutationObserver to monitor DOM changes for new relative-time elements */
   const initObserver = () => {
     const observer = new MutationObserver((mutations) => {
       let shouldUpdate = false
       for (const mutation of mutations) {
-        const target = mutation.target
-        if (isRelativeTimeElement(target)) {
+        if (isRelativeTimeElement(mutation.target)) {
           shouldUpdate = true
           break
         }
       }
-      if (shouldUpdate)
+      if (shouldUpdate) {
+        // DOM changed, we need to re-run update logic
+        // runUpdate will read current signal values
         debouncedUpdate()
+      }
     })
 
     observer.observe(document.body, {
@@ -58,8 +60,6 @@ function main() {
     })
   }
 
-  // Initialization
-  updateAllElements(displayFormatOption.value, tooltipFormatOption.value)
   initObserver()
 }
 
