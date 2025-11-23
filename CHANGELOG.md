@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.5.0](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.4.0...v0.5.0) (2025-11-23)
+
+
+### Features
+
+* introduce alien-signals for reactive state management ([c848277](https://github.com/MuXiu1997/github-relative-time-format/commit/c848277abdb9d56cfdde2dee33739d1c21d095a2))
+
 ## [0.4.0](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.3.0...v0.4.0) (2025-11-22)
 
 
