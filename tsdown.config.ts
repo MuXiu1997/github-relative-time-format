@@ -1,7 +1,6 @@
-import { defineConfig } from 'tsdown'
 import { readFile, writeFile } from 'node:fs/promises'
 import { join } from 'node:path'
-import pkg from './package.json' with { type: 'json' }
+import { defineConfig } from 'tsdown'
 
 function getUserscriptHeaders(version: string): string {
   return `// ==UserScript==
@@ -27,20 +26,25 @@ function getUserscriptHeaders(version: string): string {
 
 export default defineConfig({
   entry: ['./src/index.ts'],
-  format: 'iife', // UserScript 需要立即执行函数格式
+  format: 'iife', // UserScript requires IIFE (Immediately Invoked Function Expression) format
   clean: true,
   platform: 'browser',
-  target: 'es2020', // 现代浏览器
+  target: 'es2015',
   minify: true,
+  outputOptions: {
+    entryFileNames: 'index.js',
+  },
   hooks: {
-    "build:done": async (ctx) => {
-      const outputFile = join(ctx.options.outDir, 'index.iife.js')
+    'build:done': async (ctx) => {
+      const outDir = ctx.options.outDir
+      const version = ctx.options.pkg?.version ?? 'unknown'
+      const outputFile = join(outDir, 'index.js')
       const content = await readFile(outputFile, 'utf-8')
-      
-      const headers = getUserscriptHeaders(pkg.version)
+
+      const headers = getUserscriptHeaders(version)
       const newContent = headers + content
-      
+
       await writeFile(outputFile, newContent, 'utf-8')
-    }
-  }
+    },
+  },
 })

@@ -7,7 +7,7 @@
   "author": "MuXiu1997 <muxiu1997@gmail.com> (https://github.com/MuXiu1997/)",
   "license": "MIT",
   "keywords": [],
-  "main": "dist/index.iife.js",
+  "main": "dist/index.js",
   "engines": {
     "node": "22.21.1"
   },
