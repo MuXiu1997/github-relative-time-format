@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.0](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.5.0...v0.6.0) (2025-12-23)
+
+
+### Features
+
+* integrate consola for enhanced logging and optimize DOM update logic ([67424fa](https://github.com/MuXiu1997/github-relative-time-format/commit/67424fa03df6d4f413eefcce1290766fd083ae62))
+
 ## [0.5.0](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.4.0...v0.5.0) (2025-11-23)
 
 
