@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.6.1](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.6.0...v0.6.1) (2025-12-23)
+
+
+### Bug Fixes
+
+* restore disconnectedCallback call to stop native update timer ([bfc5ed8](https://github.com/MuXiu1997/github-relative-time-format/commit/bfc5ed861e7b4314eed5294c681e07582f895219))
+
 ## [0.6.0](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.5.0...v0.6.0) (2025-12-23)
 
 
