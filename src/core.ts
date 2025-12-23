@@ -75,6 +75,10 @@ export function applyCustomFormat(
   element.title = date.format(tooltipFormat)
 
   try {
+    // Try to stop the native component's update timer
+    // Use optional chaining to prevent the method from not existing
+    element.disconnectedCallback?.()
+
     let updated = false
     if (element.shadowRoot) {
       const newContent = date.format(displayFormat)
