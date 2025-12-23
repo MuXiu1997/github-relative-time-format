@@ -1,4 +1,4 @@
-import { effect, computed } from 'alien-signals'
+import { computed, effect } from 'alien-signals'
 import { LogLevels } from 'consola'
 import { debounce } from 'ts-debounce'
 import { version } from '../package.json'

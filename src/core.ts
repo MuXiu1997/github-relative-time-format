@@ -1,4 +1,4 @@
-import { consola, LogLevels } from 'consola'
+import { consola } from 'consola'
 import dayjs from 'dayjs'
 
 // region Constants & Types
