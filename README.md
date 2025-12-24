@@ -1,11 +1,23 @@
-# github-relative-time-format
+<h1 align="center">github-relative-time-format</h1>
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Greasy Fork](https://img.shields.io/greasyfork/v/480032.svg)](https://greasyfork.org/zh-CN/scripts/480032-github-relative-time-format)
+<div align="center">
 
-Customize GitHub's `<relative-time>` elements with your preferred date and time formats.
+<a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/License-MIT-yellow.svg?style=flat-square" alt="License: MIT"></a>
+<a href="https://greasyfork.org/zh-CN/scripts/480032-github-relative-time-format"><img src="https://img.shields.io/greasyfork/v/480032.svg?style=flat-square" alt="Greasy Fork"></a>
 
-自定义 GitHub `<relative-time>` 元素的日期与时间显示格式。
+</div>
+
+<br/>
+
+<div align="center">
+
+Customize GitHub's <code>&lt;relative-time&gt;</code> elements with your preferred date and time formats
+<br/>
+自定义 GitHub <code>&lt;relative-time&gt;</code> 元素的日期与时间显示格式
+
+</div>
+
+---
 
 ## Configuration / 配置项
 
@@ -18,7 +30,8 @@ You can access these options via the Userscript menu:
 
 ## Installation / 安装
 
-[Install on Greasyfork](https://greasyfork.org/zh-CN/scripts/480032-github-relative-time-format)
+- [Install on `Greasy Fork`](https://greasyfork.org/zh-CN/scripts/480032-github-relative-time-format)
+- [Install on `ScriptCat(脚本猫)`](https://scriptcat.org/zh-CN/script-show-page/4957)
 
 ## License / 协议
 
