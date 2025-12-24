@@ -1,10 +1,12 @@
 import { effect, signal } from 'alien-signals'
+import { showOptionModal } from './ui'
 
 /** Option management Hook */
 export function useOption(
   key: string,
   title: string,
   defaultValue: string,
+  type: 'text' | 'boolean' = 'text',
 ) {
   // Get initial value from GM storage or use default
   const initialValue = typeof GM_getValue !== 'undefined'
@@ -22,11 +24,10 @@ export function useOption(
     })
 
     // Register menu command
-    GM_registerMenuCommand(title, () => {
+    GM_registerMenuCommand(title, async () => {
       // Read current value
       const currentVal = option()
-      // eslint-disable-next-line no-alert
-      const result = prompt(title, currentVal)
+      const result = await showOptionModal(title, currentVal, type)
       if (result !== null) {
         // Update signal, this will auto-trigger persistence and UI updates
         option(result)

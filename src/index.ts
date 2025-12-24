@@ -22,8 +22,9 @@ function main() {
   )
   const debugLogOption = useOption(
     'DEBUG_LOG',
-    'Enable debug log (true / false)',
+    'Enable debug log',
     'false',
+    'boolean',
   )
   const loggerLevel = computed(() => debugLogOption() === 'true' ? LogLevels.verbose : LogLevels.info)
 
