@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.0](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.6.1...v0.7.0) (2025-12-24)
+
+
+### Features
+
+* replace prompt with custom GitHub-style modal for enhanced UI/UX ([e4d6dbc](https://github.com/MuXiu1997/github-relative-time-format/commit/e4d6dbc23ea5f8810b87aab01aebfd47d4023816))
+
 ## [0.6.1](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.6.0...v0.6.1) (2025-12-23)
 
 
