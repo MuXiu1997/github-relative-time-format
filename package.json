@@ -1,7 +1,7 @@
 {
   "name": "@muxiu1997/github-relative-time-format",
   "type": "module",
-  "version": "0.6.1",
+  "version": "0.7.0",
   "packageManager": "pnpm@10.23.0",
   "description": "Customize GitHub's <relative-time> elements with your preferred date and time formats.",
   "author": "MuXiu1997 <muxiu1997@muxiu1997.com> (https://github.com/MuXiu1997/)",
