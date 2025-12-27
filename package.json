@@ -17,18 +17,20 @@
     "lint": "eslint --fix . && tsc --noEmit",
     "postinstall": "npx simple-git-hooks"
   },
+  "dependencies": {
+    "alien-signals": "3.1.0",
+    "consola": "3.4.2",
+    "dayjs": "1.11.19",
+    "ts-debounce": "4.0.0"
+  },
   "devDependencies": {
     "@antfu/eslint-config": "6.7.1",
     "@types/greasemonkey": "3.0.3",
     "@types/node": "22.13.14",
-    "alien-signals": "3.1.0",
-    "consola": "3.4.2",
-    "dayjs": "1.11.19",
     "eslint": "9.39.2",
     "lint-staged": "16.2.7",
     "pnpm": "10.23.0",
     "simple-git-hooks": "2.13.1",
-    "ts-debounce": "4.0.0",
     "tsdown": "0.16.6",
     "typescript": "5.9.3"
   },
