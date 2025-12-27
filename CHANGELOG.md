@@ -1,5 +1,12 @@
 # Changelog
 
+## [0.7.1](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.7.0...v0.7.1) (2025-12-27)
+
+
+### Build System
+
+* modify build configuration to comply with Greasy Fork rules ([944066f](https://github.com/MuXiu1997/github-relative-time-format/commit/944066f4457b6319d0b16ed7565508e1c3963d90))
+
 ## [0.7.0](https://github.com/MuXiu1997/github-relative-time-format/compare/v0.6.1...v0.7.0) (2025-12-24)
 
 
